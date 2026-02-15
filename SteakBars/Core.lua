@@ -55,22 +55,22 @@ local prefixes = {
 }
 
 for a, prefix in ipairs(prefixes) do
-    for b=1,12 do
-        local btn = _G[prefix..b]
-        local bar = _G["SteakBar"..a]
+	for b=1,12 do
+		local btn = _G[prefix..b]
+		local bar = _G["SteakBar"..a]
 
-        if not btn then
-            local actionID = buttonOffsets[a]+b
+	if not btn then
+		local actionID = buttonOffsets[a]+b
 
-            btn = CreateFrame("CheckButton", prefix..b, bar, "ActionBarButtonTemplate")
+		btn = CreateFrame("CheckButton", prefix..b, bar, "ActionBarButtonTemplate")
 
-            btn:SetSize(BTN_SIZE, BTN_SIZE)
-            btn:SetAttribute("action", actionID)
-            btn.action = actionID
-            btn:SetID(actionID)
+		btn:SetSize(BTN_SIZE, BTN_SIZE)
+		btn:SetAttribute("action", actionID)
+		btn.action = actionID
+		btn:SetID(actionID)
 
-            btn:Show()
-        end
+		btn:Show()
+	end
 
         btn:SetParent(bar)
         btn:SetSize(BTN_SIZE, BTN_SIZE)
@@ -101,7 +101,12 @@ for a, prefix in ipairs(prefixes) do
         if nt then
             nt:SetAllPoints(btn)
             nt:Hide()
-            btn:SetNormalTexture("")
+		--btn:SetNormalTexture("")
+		btn:SetNormalTexture(nil)
+		btn:SetPushedTexture(nil)
+		btn:SetHighlightTexture(nil)
+		btn:SetCheckedTexture(nil)
+		btn:SetDisabledTexture(nil)
         end
 
         if b == 1 then
