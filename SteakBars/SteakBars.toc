@@ -1,4 +1,5 @@
 ## Interface: 30300
 ## Title: SteakBars
 ## Notes: Create action bars with pre-configured macros per spec.
+Bindings.xml
 Core.lua

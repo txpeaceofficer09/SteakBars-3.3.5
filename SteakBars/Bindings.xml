@@ -1,0 +1,86 @@
+<Bindings>
+    <!-- ========================= -->
+    <!--       SteakBar 2          -->
+    <!-- ========================= -->
+    <Header name="STEAKBAR2">SteakBar 2</Header>
+    <Binding name="STEAKBAR2BUTTON1" header="STEAKBAR2"></Binding>
+    <Binding name="STEAKBAR2BUTTON2" header="STEAKBAR2"></Binding>
+    <Binding name="STEAKBAR2BUTTON3" header="STEAKBAR2"></Binding>
+    <Binding name="STEAKBAR2BUTTON4" header="STEAKBAR2"></Binding>
+    <Binding name="STEAKBAR2BUTTON5" header="STEAKBAR2"></Binding>
+    <Binding name="STEAKBAR2BUTTON6" header="STEAKBAR2"></Binding>
+    <Binding name="STEAKBAR2BUTTON7" header="STEAKBAR2"></Binding>
+    <Binding name="STEAKBAR2BUTTON8" header="STEAKBAR2"></Binding>
+    <Binding name="STEAKBAR2BUTTON9" header="STEAKBAR2"></Binding>
+    <Binding name="STEAKBAR2BUTTON10" header="STEAKBAR2"></Binding>
+    <Binding name="STEAKBAR2BUTTON11" header="STEAKBAR2"></Binding>
+    <Binding name="STEAKBAR2BUTTON12" header="STEAKBAR2"></Binding>
+
+    <!-- ========================= -->
+    <!--       SteakBar 3          -->
+    <!-- ========================= -->
+    <Header name="STEAKBAR3">SteakBar 3</Header>
+    <Binding name="STEAKBAR3BUTTON1" header="STEAKBAR3"></Binding>
+    <Binding name="STEAKBAR3BUTTON2" header="STEAKBAR3"></Binding>
+    <Binding name="STEAKBAR3BUTTON3" header="STEAKBAR3"></Binding>
+    <Binding name="STEAKBAR3BUTTON4" header="STEAKBAR3"></Binding>
+    <Binding name="STEAKBAR3BUTTON5" header="STEAKBAR3"></Binding>
+    <Binding name="STEAKBAR3BUTTON6" header="STEAKBAR3"></Binding>
+    <Binding name="STEAKBAR3BUTTON7" header="STEAKBAR3"></Binding>
+    <Binding name="STEAKBAR3BUTTON8" header="STEAKBAR3"></Binding>
+    <Binding name="STEAKBAR3BUTTON9" header="STEAKBAR3"></Binding>
+    <Binding name="STEAKBAR3BUTTON10" header="STEAKBAR3"></Binding>
+    <Binding name="STEAKBAR3BUTTON11" header="STEAKBAR3"></Binding>
+    <Binding name="STEAKBAR3BUTTON12" header="STEAKBAR3"></Binding>
+
+    <!-- ========================= -->
+    <!--       SteakBar 4          -->
+    <!-- ========================= -->
+    <Header name="STEAKBAR4">SteakBar 4</Header>
+    <Binding name="STEAKBAR4BUTTON1" header="STEAKBAR4"></Binding>
+    <Binding name="STEAKBAR4BUTTON2" header="STEAKBAR4"></Binding>
+    <Binding name="STEAKBAR4BUTTON3" header="STEAKBAR4"></Binding>
+    <Binding name="STEAKBAR4BUTTON4" header="STEAKBAR4"></Binding>
+    <Binding name="STEAKBAR4BUTTON5" header="STEAKBAR4"></Binding>
+    <Binding name="STEAKBAR4BUTTON6" header="STEAKBAR4"></Binding>
+    <Binding name="STEAKBAR4BUTTON7" header="STEAKBAR4"></Binding>
+    <Binding name="STEAKBAR4BUTTON8" header="STEAKBAR4"></Binding>
+    <Binding name="STEAKBAR4BUTTON9" header="STEAKBAR4"></Binding>
+    <Binding name="STEAKBAR4BUTTON10" header="STEAKBAR4"></Binding>
+    <Binding name="STEAKBAR4BUTTON11" header="STEAKBAR4"></Binding>
+    <Binding name="STEAKBAR4BUTTON12" header="STEAKBAR4"></Binding>
+
+    <!-- ========================= -->
+    <!--       SteakBar 5          -->
+    <!-- ========================= -->
+    <Header name="STEAKBAR5">SteakBar 5</Header>
+    <Binding name="STEAKBAR5BUTTON1" header="STEAKBAR5"></Binding>
+    <Binding name="STEAKBAR5BUTTON2" header="STEAKBAR5"></Binding>
+    <Binding name="STEAKBAR5BUTTON3" header="STEAKBAR5"></Binding>
+    <Binding name="STEAKBAR5BUTTON4" header="STEAKBAR5"></Binding>
+    <Binding name="STEAKBAR5BUTTON5" header="STEAKBAR5"></Binding>
+    <Binding name="STEAKBAR5BUTTON6" header="STEAKBAR5"></Binding>
+    <Binding name="STEAKBAR5BUTTON7" header="STEAKBAR5"></Binding>
+    <Binding name="STEAKBAR5BUTTON8" header="STEAKBAR5"></Binding>
+    <Binding name="STEAKBAR5BUTTON9" header="STEAKBAR5"></Binding>
+    <Binding name="STEAKBAR5BUTTON10" header="STEAKBAR5"></Binding>
+    <Binding name="STEAKBAR5BUTTON11" header="STEAKBAR5"></Binding>
+    <Binding name="STEAKBAR5BUTTON12" header="STEAKBAR5"></Binding>
+
+    <!-- ========================= -->
+    <!--       SteakBar 6          -->
+    <!-- ========================= -->
+    <Header name="STEAKBAR6">SteakBar 6</Header>
+    <Binding name="STEAKBAR6BUTTON1" header="STEAKBAR6"></Binding>
+    <Binding name="STEAKBAR6BUTTON2" header="STEAKBAR6"></Binding>
+    <Binding name="STEAKBAR6BUTTON3" header="STEAKBAR6"></Binding>
+    <Binding name="STEAKBAR6BUTTON4" header="STEAKBAR6"></Binding>
+    <Binding name="STEAKBAR6BUTTON5" header="STEAKBAR6"></Binding>
+    <Binding name="STEAKBAR6BUTTON6" header="STEAKBAR6"></Binding>
+    <Binding name="STEAKBAR6BUTTON7" header="STEAKBAR6"></Binding>
+    <Binding name="STEAKBAR6BUTTON8" header="STEAKBAR6"></Binding>
+    <Binding name="STEAKBAR6BUTTON9" header="STEAKBAR6"></Binding>
+    <Binding name="STEAKBAR6BUTTON10" header="STEAKBAR6"></Binding>
+    <Binding name="STEAKBAR6BUTTON11" header="STEAKBAR6"></Binding>
+    <Binding name="STEAKBAR6BUTTON12" header="STEAKBAR6"></Binding>
+</Bindings>

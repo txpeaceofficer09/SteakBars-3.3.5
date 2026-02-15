@@ -2,28 +2,6 @@ local f = CreateFrame("Frame", nil, UIParent)
 
 local BTN_SIZE = 28
 local buttonOffsets = {0, 36, 60, 48, 12, 24}
-local bindings = {
-    [2] = {
-        [1] = "SHIFT-1",
-        [2] = "SHIFT-2",
-        [3] = "SHIFT-3",
-        [4] = "SHIFT-4",
-        [5] = "SHIFT-5",
-        [6] = "SHIFT-6",
-        [7] = "SHIFT-7",
-        [8] = "SHIFT-8",
-        [9] = "SHIFT-9",
-        [10] = "SHIFT-0",
-        [11] = "SHIFT--",
-        [12] = "SHIFT-="
-    },
-    [3] = {
-        [1] = "`",
-        [2] = "q",
-        [3] = "e",
-        [4] = "f"
-    }
-}
 
 for i=1,6 do
     local bar = CreateFrame("Frame", "SteakBar"..i, UIParent, "SecureHandlerStateTemplate")
@@ -45,17 +23,8 @@ for i=1,6 do
     end
 end
 
-local prefixes = {
-	--"ActionButton",
-	"SteakBar1Button",
-	"SteakBar2Button",
-	"SteakBar3Button",
-	"SteakBar4Button",
-	"SteakBar5Button",
-	"SteakBar6Button",
-}
-
-for a, prefix in ipairs(prefixes) do
+for a=1,6 do
+	local prefix = "SteakBar"..a.."Button"
 	for b=1,12 do
 		local btn = _G[prefix..b]
 		local bar = _G["SteakBar"..a]
@@ -80,25 +49,6 @@ for a, prefix in ipairs(prefixes) do
         btn:SetAttribute("showgrid", 0)
         btn:SetAttribute("statehidden", false)
 
-        local key = bindings[a] and bindings[a][b]
-        local hotkey = _G[btn:GetName().."HotKey"]
-
-        if key then
-            SetBindingClick(key, btn:GetName())
-            --SetOverrideBindingClick(btn, true, key, btn:GetName(), "LeftButton")
-
-            local text = key:gsub("SHIFT", "s")
-
-            hotkey:SetText(text)
-            hotkey:SetPoint("TOPLEFT", btn, "TOPLEFT", -2, -2)
-            hotkey:Show()
-        else
-            hotkey:SetText(RANGE_INDICATOR)
-            hotkey:SetPoint("TOPLEFT", btn, "TOPLEFT", 1, -2)
-            hotkey:Show()
-        end
-
-	--btn:SetNormalTexture(nil)
 	local nt = _G[btn:GetName().."NormalTexture"]
 	if nt then
 		nt:SetAllPoints(btn)
@@ -155,12 +105,12 @@ petbar:SetPoint("BOTTOM", SteakBar6, "TOP", 0, 4)
 RegisterStateDriver(petbar, "visibility", "[@pet,exists] show; hide")
 
 for i=1,10 do
-	--local btn = _G["PetActionButton"..i]
-	local btn = CreateFrame("CheckButton", "SteakPetBarButton"..i, SteakPetBar, "PetActionButtonTemplate", i)
+	local btn = _G["PetActionButton"..i]
+	--local btn = CreateFrame("CheckButton", "SteakPetBarButton"..i, SteakPetBar, "PetActionButtonTemplate", i)
 
-	--btn:SetParent(SteakPetBar)
+	btn:SetParent(SteakPetBar)
 	btn:SetSize(BTN_SIZE, BTN_SIZE)
-	--btn:ClearAllPoints()
+	btn:ClearAllPoints()
 
 	local nt = _G[btn:GetName().."NormalTexture"]
 	if nt then
@@ -174,6 +124,7 @@ for i=1,10 do
 		btn:SetPoint("LEFT", SteakPetBar, "LEFT", 0, 0)
 	else
 		btn:SetPoint("LEFT", _G["PetActionButton"..(i-1)], "RIGHT", 4, 0)
+		--btn:SetPoint("LEFT", _G["SteakPetBarButton"..(i-1)], "RIGHT", 4, 0)
 	end
 end
 
@@ -245,30 +196,30 @@ LeaveBtn:SetAttribute("macrotext", "/leavevehicle\n/dismiss")
 RegisterStateDriver(LeaveBtn, "visibility", "[bonusbar:5] show; hide")
 
 local function UpdateBindings()
-    for a=2,6 do
-        for i=1,12,1 do
-            local btn = _G["SteakBar"..a.."Button"..i]
-            if btn then
-                local id = btn:GetID()
+	for a=2,6 do
+		for i=1,12,1 do
+			local btn = _G["SteakBar"..a.."Button"..i]
 
-                local hotkey = _G[btn:GetName().."HotKey"]
-                local key = GetBindingKey("STEAKBAR"..a.."BUTTON"..i)
-                local text = GetBindingText(key, "KEY_", 1)
+			if btn then
+				local id = btn:GetID()
 
-                if text == "" then
-                    hotkey:SetText(RANGE_INDICATOR)
-                    hotkey:SetPoint("TOPLEFT", btn, "TOPLEFT", 1, -2)
-                    --hotkey:Hide()
-                    hotkey:Show()
-                else
-                    hotkey:SetText(text)
-                    hotkey:SetPoint("TOPLEFT", btn, "TOPLEFT", -2, -2)
-                    hotkey:Show()
-                    SetOverrideBindingClick(btn, true, key, btn:GetName(), "LeftButton")
-                end
-            end
-        end
-    end
+				local hotkey = _G[btn:GetName().."HotKey"]
+				local key = GetBindingKey("STEAKBAR"..a.."BUTTON"..i)
+				local text = GetBindingText(key, "KEY_", 1)
+					
+				if text == "" then
+					hotkey:SetText(RANGE_INDICATOR)
+					hotkey:SetPoint("TOPLEFT", btn, "TOPLEFT", 1, -2)
+					hotkey:Show()					
+				else
+					hotkey:SetText(text)
+					hotkey:SetPoint("TOPLEFT", btn, "TOPLEFT", -2, -2)
+					hotkey:Show()
+					SetOverrideBindingClick(btn, true, key, btn:GetName(), "LeftButton")					
+				end
+			end
+		end
+	end
 end
 
 local function OnEvent(self, event, ...)
@@ -291,21 +242,6 @@ local function OnEvent(self, event, ...)
                 _G["BINDING_NAME_STEAKBAR"..a.."BUTTON"..b] = "Bar "..a.." Button "..b
             end
         end
-        --[[
-        BINDING_HEADER_EXTRABAR = "ExtraBar"
-        BINDING_NAME_EXTRABARBUTTON1 = "Button 1"
-        BINDING_NAME_EXTRABARBUTTON2 = "Button 2"
-        BINDING_NAME_EXTRABARBUTTON3 = "Button 3"
-        BINDING_NAME_EXTRABARBUTTON4 = "Button 4"
-        BINDING_NAME_EXTRABARBUTTON5 = "Button 5"
-        BINDING_NAME_EXTRABARBUTTON6 = "Button 6"
-        BINDING_NAME_EXTRABARBUTTON7 = "Button 7"
-        BINDING_NAME_EXTRABARBUTTON8 = "Button 8"
-        BINDING_NAME_EXTRABARBUTTON9 = "Button 9"
-        BINDING_NAME_EXTRABARBUTTON10 = "Button 10"
-        BINDING_NAME_EXTRABARBUTTON11 = "Button 11"
-        BINDING_NAME_EXTRABARBUTTON12 = "Button 12"
-        ]]
     end
 end
 
