@@ -46,12 +46,13 @@ for i=1,6 do
 end
 
 local prefixes = {
-    "ActionButton",
-    "SteakBar2Button",
-    "SteakBar3Button",
-    "SteakBar4Button",
-    "SteakBar5Button",
-    "SteakBar6Button",
+	--"ActionButton",
+	"SteakBar1Button",
+	"SteakBar2Button",
+	"SteakBar3Button",
+	"SteakBar4Button",
+	"SteakBar5Button",
+	"SteakBar6Button",
 }
 
 for a, prefix in ipairs(prefixes) do
@@ -97,19 +98,16 @@ for a, prefix in ipairs(prefixes) do
             hotkey:Show()
         end
 
-        local nt = _G[btn:GetName().."NormalTexture"]
-        if nt then
-            nt:SetAllPoints(btn)
-            nt:Hide()
-		--btn:SetNormalTexture("")
-		btn:SetNormalTexture(nil)
-		btn:SetPushedTexture(nil)
-		btn:SetHighlightTexture(nil)
-		btn:SetCheckedTexture(nil)
-		btn:SetDisabledTexture(nil)
-        end
+	--btn:SetNormalTexture(nil)
+	local nt = _G[btn:GetName().."NormalTexture"]
+	if nt then
+		nt:SetAllPoints(btn)
+		nt:Hide()
+		nt:SetAlpha(0)
+		btn:SetNormalTexture("")
+	end
 
-        if b == 1 then
+	if b == 1 then
             btn:SetPoint("LEFT", bar, "LEFT", 0, 0)
         else
             btn:SetPoint("LEFT", _G[prefix..(b-1)], "RIGHT", 4, 0)
@@ -138,6 +136,7 @@ for i=1,12 do
     if nt then
         nt:SetAllPoints(btn)
         nt:Hide()
+	nt:SetAlpha(0)
         btn:SetNormalTexture("")
     end
 
@@ -156,24 +155,26 @@ petbar:SetPoint("BOTTOM", SteakBar6, "TOP", 0, 4)
 RegisterStateDriver(petbar, "visibility", "[@pet,exists] show; hide")
 
 for i=1,10 do
-    local btn = _G["PetActionButton"..i]
+	--local btn = _G["PetActionButton"..i]
+	local btn = CreateFrame("CheckButton", "SteakPetBarButton"..i, SteakPetBar, "PetActionButtonTemplate", i)
 
-    btn:SetParent(SteakPetBar)
-    btn:SetSize(BTN_SIZE, BTN_SIZE)
-    btn:ClearAllPoints()
+	--btn:SetParent(SteakPetBar)
+	btn:SetSize(BTN_SIZE, BTN_SIZE)
+	--btn:ClearAllPoints()
 
-    local nt = _G[btn:GetName().."NormalTexture"]
-    if nt then
-        nt:SetAllPoints(btn)
-        nt:Hide()
-        btn:SetNormalTexture("")
-    end
-
-    if i == 1 then
-        btn:SetPoint("LEFT", SteakPetBar, "LEFT", 0, 0)
-    else
-        btn:SetPoint("LEFT", _G["PetActionButton"..(i-1)], "RIGHT", 4, 0)
-    end
+	local nt = _G[btn:GetName().."NormalTexture"]
+	if nt then
+		nt:SetAllPoints(btn)
+		nt:Hide()
+		nt:SetAlpha(0)
+		btn:SetNormalTexture("")
+	end
+    
+	if i == 1 then
+		btn:SetPoint("LEFT", SteakPetBar, "LEFT", 0, 0)
+	else
+		btn:SetPoint("LEFT", _G["PetActionButton"..(i-1)], "RIGHT", 4, 0)
+	end
 end
 
 local stancebar = CreateFrame("Frame", "SteakStanceBar", UIParent, "SecureHandlerStateTemplate")
@@ -182,24 +183,27 @@ stancebar:SetSize((BTN_SIZE * 10) + (4 * 9), BTN_SIZE)
 stancebar:SetPoint("BOTTOM", SteakBar5, "TOP", 0, 4)
 
 for i=1,10 do
-    local btn = _G["ShapeshiftButton"..i]
+	local btn = _G["ShapeshiftButton"..i]
+	--local btn = CreateFrame("CheckButton", "SteakStanceBarButton"..i, SteakStanceBar, "ShapeshiftButtonTemplate", i)
 
-    btn:SetParent(SteakStanceBar)
-    btn:SetSize(BTN_SIZE, BTN_SIZE)
-    btn:ClearAllPoints()
+	btn:SetParent(SteakStanceBar)
+	btn:SetSize(BTN_SIZE, BTN_SIZE)
+	btn:ClearAllPoints()
 
-    local nt = _G[btn:GetName().."NormalTexture"]
-    if nt then
-        nt:SetAllPoints(btn)
-        nt:Hide()
-        btn:SetNormalTexture("")
-    end
+	local nt = _G[btn:GetName().."NormalTexture"]
+	if nt then
+		nt:SetAllPoints(btn)
+		nt:Hide()
+		nt:SetAlpha(0)
+		btn:SetNormalTexture("")
+	end
 
-    if i == 1 then
-        btn:SetPoint("LEFT", SteakStanceBar, "LEFT", 0, 0)
-    else
-        btn:SetPoint("LEFT", _G["ShapeshiftButton"..(i-1)], "RIGHT", 4, 0)
-    end
+	if i == 1 then
+		btn:SetPoint("LEFT", SteakStanceBar, "LEFT", 0, 0)
+	else
+		btn:SetPoint("LEFT", _G["ShapeshiftButton"..(i-1)], "RIGHT", 4, 0)
+		--btn:SetPoint("LEFT", _G["SteakStanceBarButton"..(i-1)], "RIGHT", 4, 0)
+	end
 end
 
 local vehiclebar = CreateFrame("Frame", "SteakVehicleBar", UIParent, "SecureHandlerStateTemplate")
@@ -220,6 +224,7 @@ for i=1,6 do
     if nt then
         nt:SetAllPoints(btn)
         nt:Hide()
+	nt:SetAlpha(0)
         btn:SetNormalTexture("")
     end
 
@@ -323,12 +328,3 @@ for _, frame in ipairs({MainMenuBar, VehicleMenuBar, MultiBarLeft, MultiBarRight
     frame:Hide()
     frame:UnregisterAllEvents()
 end
-
---[[
-MainMenuBar:HookScript("OnShow", function(self) self:Hide() end)
-MainMenuBar:UnregisterAllEvents()
-MainMenuBar:Hide()
-
-VehicleMenuBar:HookScript("OnShow", function(self) self:Hide() end)
-VehicleMenuBar:Hide()
-]]
