@@ -9,7 +9,7 @@ for i=1,6 do
     bar:SetSize((BTN_SIZE * 12)+(4 * 11), BTN_SIZE)
 
     if i == 1 then
-        bar:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOM", 90, 20)
+        bar:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOM", 58, 20)
     elseif i % 2 == 0 then
         bar:SetPoint("LEFT", _G["SteakBar"..(i-1)], "RIGHT", 4, 0)
     else
@@ -38,6 +38,8 @@ for a=1,6 do
 		btn:SetAttribute("action", actionID)
 		btn.action = actionID
 		btn:SetID(actionID)
+
+		_G[btn:GetName().."Name"]:Hide() -- Hide macro name
 
 		btn:Show()
 	end
@@ -187,7 +189,7 @@ for i=1,6 do
 end
 
 local LeaveBtn = CreateFrame("Button", "SteakLeaveVehicleButton", UIParent, "SecureActionButtonTemplate, SecureHandlerStateTemplate")
-LeaveBtn:SetSize(BTN_SIZE, BTN_SIZE)
+LeaveBtn:SetSize(BTN_SIZE+14, BTN_SIZE+14)
 LeaveBtn:SetPoint("LEFT", SteakVehicleBar, "RIGHT", 4, 0)
 LeaveBtn:SetNormalTexture("Interface\\Vehicles\\UI-Vehicles-Button-Exit-Up")
 LeaveBtn:SetPushedTexture("Interface\\Vehicles\\UI-Vehicles-Button-Exit-Down")
@@ -196,6 +198,20 @@ LeaveBtn:SetAttribute("macrotext", "/leavevehicle\n/dismiss")
 RegisterStateDriver(LeaveBtn, "visibility", "[bonusbar:5] show; hide")
 
 local function UpdateBindings()
+	for i=1,12,1 do
+		local btn = _G["SteakBar1Button"..i]
+		local hotkey = _G["SteakBar1Button"..i.."HotKey"]
+
+		local key = GetBindingKey("STEAKBAR1BUTTON"..i)
+		local text = GetBindingText(key, "KEY_", 1)
+
+		if text == "" then
+			hotkey:SetPoint("TOPLEFT", btn, "TOPLEFT", -5, -4)
+		else
+			hotkey:SetPoint("TOPLEFT", btn, "TOPLEFT", -8, -4)
+		end
+	end
+
 	for a=2,6 do
 		for i=1,12,1 do
 			local btn = _G["SteakBar"..a.."Button"..i]
@@ -209,11 +225,13 @@ local function UpdateBindings()
 					
 				if text == "" then
 					hotkey:SetText(RANGE_INDICATOR)
-					hotkey:SetPoint("TOPLEFT", btn, "TOPLEFT", 1, -2)
+					--hotkey:SetPoint("TOPLEFT", btn, "TOPLEFT", 1, -2)
+					hotkey:SetPoint("TOPLEFT", btn, "TOPLEFT", -5, -4)
 					hotkey:Show()					
 				else
 					hotkey:SetText(text)
-					hotkey:SetPoint("TOPLEFT", btn, "TOPLEFT", -2, -2)
+					--hotkey:SetPoint("TOPLEFT", btn, "TOPLEFT", -2, -2)
+					hotkey:SetPoint("TOPLEFT", btn, "TOPLEFT", -8, -4)
 					hotkey:Show()
 					SetOverrideBindingClick(btn, true, key, btn:GetName(), "LeftButton")					
 				end
