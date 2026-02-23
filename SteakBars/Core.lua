@@ -104,7 +104,7 @@ local petbar = CreateFrame("Frame", "SteakPetBar", UIParent, "SecureHandlerState
 petbar:SetSize((BTN_SIZE * 10) + (4 * 9), BTN_SIZE)
 petbar:SetPoint("BOTTOM", SteakBar6, "TOP", 0, 4)
 
-RegisterStateDriver(petbar, "visibility", "[@pet,exists] show; hide")
+RegisterStateDriver(petbar, "visibility", "[bonusbar:5] hide; [@pet,exists] show; hide")
 
 for i=1,10 do
 	local btn = _G["PetActionButton"..i]
@@ -134,6 +134,8 @@ local stancebar = CreateFrame("Frame", "SteakStanceBar", UIParent, "SecureHandle
 
 stancebar:SetSize((BTN_SIZE * 10) + (4 * 9), BTN_SIZE)
 stancebar:SetPoint("BOTTOM", SteakBar5, "TOP", 0, 4)
+
+RegisterStateDriver(stancebar, "visibility", "[bonusbar:5] hide; show")
 
 for i=1,10 do
 	local btn = _G["ShapeshiftButton"..i]
@@ -190,12 +192,34 @@ end
 
 local LeaveBtn = CreateFrame("Button", "SteakLeaveVehicleButton", UIParent, "SecureActionButtonTemplate, SecureHandlerStateTemplate")
 LeaveBtn:SetSize(BTN_SIZE+14, BTN_SIZE+14)
-LeaveBtn:SetPoint("LEFT", SteakVehicleBar, "RIGHT", 4, 0)
+--LeaveBtn:SetPoint("LEFT", SteakVehicleBar, "RIGHT", 4, 0)
+LeaveBtn:SetPoint("RIGHT", SteakPlayerFrame, "LEFT", -4, 0)
 LeaveBtn:SetNormalTexture("Interface\\Vehicles\\UI-Vehicles-Button-Exit-Up")
 LeaveBtn:SetPushedTexture("Interface\\Vehicles\\UI-Vehicles-Button-Exit-Down")
+--LeaveBtn:SetAttribute("type", "vehicleexit")
 LeaveBtn:SetAttribute("type", "macro")
 LeaveBtn:SetAttribute("macrotext", "/leavevehicle\n/dismiss")
-RegisterStateDriver(LeaveBtn, "visibility", "[bonusbar:5] show; hide")
+--RegisterStateDriver(LeaveBtn, "visibility", "[bonusbar:5] show; hide")
+
+LeaveBtn:RegisterEvent("UNIT_ENTERED_VEHICLE")
+LeaveBtn:RegisterEvent("UNIT_EXITED_VEHICLE")
+LeaveBtn:RegisterEvent("PLAYER_ENTERING_WORLD")
+LeaveBtn:RegisterEvent("PLAYER_LOSES_VEHICLE_DATA")
+LeaveBtn:RegisterEvent("PLAYER_GAINS_VEHICLE_DATA")
+
+LeaveBtn:SetScript("OnEvent", function(self, event, ...)
+	if CanExitVehicle() then
+		self:ClearAllPoints()
+		if SteakPetFrame then
+			self:SetPoint("RIGHT", SteakPetFrame, "LEFT", -4, 0)
+		else
+			self:SetPoint("RIGHT", SteakPlayerFrame, "LEFT", -4, 0)
+		end
+		self:Show()
+	else
+		self:Hide()
+	end
+end)
 
 local function UpdateBindings()
 	for i=1,12,1 do

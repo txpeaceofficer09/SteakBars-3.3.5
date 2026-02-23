@@ -3,3 +3,4 @@
 ## Notes: Create action bars with pre-configured macros per spec.
 Bindings.xml
 Core.lua
+Flash.lua
