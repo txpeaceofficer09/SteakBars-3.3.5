@@ -1,6 +1,6 @@
 ## Interface: 30300
 ## Title: SteakBars
-## Notes: Create action bars with pre-configured macros per spec.
+## Notes: Create a predefined, custom action bar layout.
 Bindings.xml
 Core.lua
 Flash.lua

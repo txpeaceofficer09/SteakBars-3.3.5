@@ -1,146 +1,167 @@
 local f = CreateFrame("Frame")
 
-local SPELL_MOONFIRE      = 48462
-local SPELL_INSECT_SWARM  = 48468
-local SPELL_FAERIE_FIRE   = 770
-local SPELL_STARFALL      = 53201
-local SPELL_FORCE_OF_NATURE = 33831
-local SPELL_WRATH         = 48461
-local SPELL_STARFIRE      = 48465
+local FLASH_ALPHA_MIN = 0.2
+local FLASH_ALPHA_MAX = 0.9
+local FLASH_SPEED = 10
 
-local ECLIPSE_SOLAR       = 48517
-local ECLIPSE_LUNAR       = 48518
+local buttons = {}
 
-local function CreateFlashOverlay(button)
-	if button.FlashOverlay then return button.FlashOverlay end
+local function CreateFlashLayer(btn)
+	if btn.SteakFlash then return end
 
-	local glow = button:CreateTexture(nil, "OVERLAY")
-	glow:SetTexture("Interface\\SpellActivationOverlay\\IconAlert")
-	glow:SetBlendMode("ADD")
-	glow:SetAllPoints(button)
-	glow:SetAlpha(0)
+	local flash = CreateFrame("Frame", nil, btn)
+	flash:SetAllPoints(btn)
+	flash:EnableMouse(false)
+	flash:Hide()
+	
+	local tex = flash:CreateTexture(nil, "OVERLAY")
+	tex:SetAllPoints(flash)
+	tex:SetTexture("Interface\\Buttons\\CheckButtonHilight")
+	tex:SetVertexColor(0.5, 0.5, 1)
+	tex:SetBlendMode("ADD")
+	flash.tex = tex
 
-	button.FlashOverlay = glow
-	return glow
-end
-
-function FlashButton(button)
-	local glow = CreateFlashOverlay(button)
-	UIFrameFadeIn(glow, 0.2, glow:GetAlpha(), 1)
-end
-
-function StopFlash(button)
-	if button.FlashOverlay then
-		UIFrameFadeOut(button.FlashOverlay, 0.2, button.FlashOverlay:GetAlpha(), 0)
-	end
-end
-
-local function GetAllActionButtons()
-	local buttons = {}
-
-	for a=1,6 do
-		for b=1,12 do
-			table.insert(buttons, _G["SteakBar"..a.."Button"..b])
+	flash:SetScript("OnUpdate", function(self, elapsed)
+		if not self:IsShown() then
+			self.timer = 0
+			return
 		end
-	end
 
-	return buttons
+		self.timer = (self.timer or 0) + elapsed
+		
+		local range = FLASH_ALPHA_MAX - FLASH_ALPHA_MIN
+		local delta = (math.sin(self.timer * FLASH_SPEED) + 1) / 2
+		local alpha = FLASH_ALPHA_MIN + (range * delta)
+    
+		self:SetAlpha(alpha)
+	end)
+
+	btn.SteakFlash = flash
+	table.insert(buttons, btn)
 end
 
-local function TargetHasDebuff(spellID)
-	for i = 1, 40 do
-		local id = select(10, UnitDebuff("target", i))
-		if id == spellID then return true end
-	end
-	return false
+function SteakFlash_Start(btn)
+    if not btn or btn.SteakFlashActive then return end
+    CreateFlashLayer(btn)
+    btn.SteakFlashActive = true
+    btn.SteakFlash:Show()
 end
 
-local function SpellReady(spellID)
-	local start, duration = GetSpellCooldown(spellID)
-	return (start == 0 or (start + duration) <= GetTime())
-end
-
-local function GetEclipseState()
-	for i = 1, 40 do
-		local _, _, _, _, _, _, _, _, _, id = UnitBuff("player", i)
-		if id == ECLIPSE_SOLAR then return "SOLAR" end
-		if id == ECLIPSE_LUNAR then return "LUNAR" end
-	end
-	return nil
+function SteakFlash_Stop(btn)
+    if not btn or not btn.SteakFlashActive then return end
+    btn.SteakFlashActive = false
+    btn.SteakFlash:Hide()
 end
 
 local function ShouldFlashSpell(spellID)
-    local eclipse = GetEclipseState()
+	local spellName = GetSpellInfo(spellID)
+	
+	local solarEclipse = UnitAura("player", "Eclipse (Solar)") ~= nil
+	local lunarEclipse = UnitAura("player", "Eclipse (Lunar)") ~= nil
 
-    -- DOT maintenance
-    if spellID == SPELL_MOONFIRE then
-        return not TargetHasDebuff(SPELL_MOONFIRE)
-    end
+	local comboPoints = GetComboPoints("player", "target")
 
-    if spellID == SPELL_INSECT_SWARM then
-        return not TargetHasDebuff(SPELL_INSECT_SWARM)
-    end
+	-- Faerie Fire
+	if ( spellID == 770 or spellID == 16857 ) and not UnitDebuff("target", spellName) and GetSpellCooldown(spellID) == 0 then return true end
 
-    if spellID == SPELL_FAERIE_FIRE then
-        return not TargetHasDebuff(SPELL_FAERIE_FIRE)
-    end
+	-- Savage Roar
+	if spellID == 52610 and not UnitAura("player", spellName) and comboPoints > 3 then return true end
 
-    -- Cooldowns
-    if spellID == SPELL_STARFALL then
-        return SpellReady(SPELL_STARFALL)
-    end
+	-- Moonfire
+	if spellID == 48463 and not UnitDebuff("target", spellName) then return true end
 
-    if spellID == SPELL_FORCE_OF_NATURE then
-        return SpellReady(SPELL_FORCE_OF_NATURE)
-    end
+	-- Mangle
+	if spellID == 48566 and not UnitDebuff("target", spellName) then return true end
+	
+	-- Rake
+	if spellID == 48574 and not UnitDebuff("target", spellName) then return true end
+	
+	-- Rip
+	if spellID == 49800 and UnitHealth("target") >= 20000 and not UnitDebuff("target", spellName) and comboPoints == 5 then return true end
+	
+	-- Tiger's Fury
+	if spellID == 50213 and UnitPowerType("player") == 3 and UnitPower("player") <= 40 and GetSpellCooldown(spellID) == 0 then return true end
+	
+	-- Berserk
+	if spellID == 50334 and UnitPowerType("player") == 3 and UnitPower("player") >= 80 and GetSpellCooldown(spellID) == 0 then return true end
+	
+	-- Ferocious Bite
+	if spellID == 48577 and UnitHealth("target") < 20000 and comboPoints == 5 then return true end
+	if spellID == 48577 and comboPoints == 5 and UnitDebuff("target", "Rip") then return true end
 
-	-- Eclipse rotation
-	if spellID == SPELL_WRATH then
-		-- Cast Wrath during Lunar Eclipse OR when building toward Lunar
-		return eclipse == "LUNAR" or eclipse == nil
+	if spellID == 48461 and ( solarEclipse or not lunarEclipse ) then
+		return true
+	elseif spellID == 48465 and lunarEclipse then
+		return true
 	end
-
-	if spellID == SPELL_STARFIRE then
-		-- Cast Starfire during Solar Eclipse OR when building toward Solar
-		return eclipse == "SOLAR"
+    
+	if spellID == 48470 then
+		if GetNumRaidMembers() > 0 or GetNumPartyMembers() > 0 then
+			if not UnitAura("player", "Gift of the Wild") then return true end
+		end
 	end
-
+    
+	if spellID == 48469 then
+		if GetNumRaidMembers() == 0 and GetNumPartyMembers() == 0 then
+			if not UnitAura("player", "Mark of the Wild") then return true end
+		end
+	end
+    
 	return false
 end
 
+local function HookSteakButtons()
+    for a=1,6 do
+        for b=1,12 do
+            local btn = _G["SteakBar"..a.."Button"..b]
+            if btn then
+                CreateFlashLayer(btn)
+            end
+        end
+    end
+
+    for i=1,12 do
+        local btn = _G["BonusActionButton"..i]
+        if btn then CreateFlashLayer(btn) end
+    end
+
+    for i=1,10 do
+        local btn = _G["PetActionButton"..i]
+        if btn then CreateFlashLayer(btn) end
+    end
+
+    for i=1,10 do
+        local btn = _G["ShapeshiftButton"..i]
+        if btn then CreateFlashLayer(btn) end
+    end
+
+    for i=1,6 do
+        local btn = _G["VehicleMenuBarActionButton"..i]
+        if btn then CreateFlashLayer(btn) end
+    end
+end
+
+HookSteakButtons()
+
 local function OnEvent(self, event, ...)
-	for _, button in ipairs(GetAllActionButtons()) do
-		local action = button.action
-		if action then
-			local spellID = select(7, GetActionInfo(action))
-			if spellID and ShouldFlashSpell(spellID) then
-				FlashButton(button)
-				print("flash", button:GetName(), spellID)
-			else
-				StopFlash(button)
+	for _, button in ipairs(buttons) do
+		if button.action and HasAction(button.action) then
+			local type, _, _, spellID = GetActionInfo(button.action)
+			
+			if type == "spell" and spellID > 0 then
+				if ShouldFlashSpell(spellID) then
+					SteakFlash_Start(button)
+				else
+					SteakFlash_Stop(button)
+				end
 			end
 		end
 	end
 end
 
-local function OnUpdate(self, elapsed)
-	for _, button in ipairs(GetAllActionButtons()) do
-		local action = button.action
-		if action then
-			local spellID = select(4, GetActionInfo(action))
-			if spellID and ShouldFlashSpell(spellID) then
-				FlashButton(button)
-			else
-				StopFlash(button)
-			end
-		end
-	end
-end
-
-f:RegisterEvent("PLAYER_TARGET_CHANGED")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:RegisterEvent("UNIT_AURA")
-f:RegisterEvent("ACTIONBAR_UPDATE_USABLE")
-f:RegisterEvent("ACTIONBAR_UPDATE_COOLDOWN")
+f:RegisterEvent("ACTIONBAR_UPDATE_STATE")
+f:RegisterEvent("UNIT_COMBO_POINTS")
 
---f:SetScript("OnUpdate", OnUpdate)
 f:SetScript("OnEvent", OnEvent)
