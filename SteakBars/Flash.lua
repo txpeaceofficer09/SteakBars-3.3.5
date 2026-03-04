@@ -2,7 +2,7 @@ local f = CreateFrame("Frame")
 
 local FLASH_ALPHA_MIN = 0.2
 local FLASH_ALPHA_MAX = 0.9
-local FLASH_SPEED = 10
+local FLASH_SPEED = 20
 
 local buttons = {}
 
@@ -15,9 +15,13 @@ local function CreateFlashLayer(btn)
 	flash:Hide()
 	
 	local tex = flash:CreateTexture(nil, "OVERLAY")
-	tex:SetAllPoints(flash)
-	tex:SetTexture("Interface\\Buttons\\CheckButtonHilight")
-	tex:SetVertexColor(0.5, 0.5, 1)
+	--tex:SetAllPoints(flash)
+	--tex:SetTexture("Interface\\Buttons\\CheckButtonHilight")
+	--tex:SetTexture("Interface\\Buttons\\UI-ActionButton-Border")
+	tex:SetPoint("CENTER", flash, "CENTER", 0, 0)
+	tex:SetSize(flash:GetSize())
+	tex:SetTexture("Interface\\Cooldown\\star4")
+	tex:SetVertexColor(1, 1, 0)
 	tex:SetBlendMode("ADD")
 	flash.tex = tex
 
@@ -34,6 +38,13 @@ local function CreateFlashLayer(btn)
 		local alpha = FLASH_ALPHA_MIN + (range * delta)
     
 		self:SetAlpha(alpha)
+		
+		local size = flash:GetSize()
+		local min = size * 1.8
+		local max = size * 2.2
+		local newSize = min + ((max-min)*delta)
+		
+		tex:SetSize(newSize, newSize)
 	end)
 
 	btn.SteakFlash = flash
@@ -163,5 +174,6 @@ f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:RegisterEvent("UNIT_AURA")
 f:RegisterEvent("ACTIONBAR_UPDATE_STATE")
 f:RegisterEvent("UNIT_COMBO_POINTS")
+f:RegisterEvent("PLAYER_CHANGED_TARGET")
 
 f:SetScript("OnEvent", OnEvent)

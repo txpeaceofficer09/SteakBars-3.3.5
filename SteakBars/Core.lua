@@ -29,20 +29,20 @@ for a=1,6 do
 		local btn = _G[prefix..b]
 		local bar = _G["SteakBar"..a]
 
-	if not btn then
-		local actionID = buttonOffsets[a]+b
+		if not btn then
+			local actionID = buttonOffsets[a]+b
 
-		btn = CreateFrame("CheckButton", prefix..b, bar, "ActionBarButtonTemplate")
+			btn = CreateFrame("CheckButton", prefix..b, bar, "ActionBarButtonTemplate")
 
-		btn:SetSize(BTN_SIZE, BTN_SIZE)
-		btn:SetAttribute("action", actionID)
-		btn.action = actionID
-		btn:SetID(actionID)
+			btn:SetSize(BTN_SIZE, BTN_SIZE)
+			btn:SetAttribute("action", actionID)
+			btn.action = actionID
+			btn:SetID(actionID)
 
-		_G[btn:GetName().."Name"]:Hide() -- Hide macro name
+			_G[btn:GetName().."Name"]:Hide() -- Hide macro name
 
-		btn:Show()
-	end
+			btn:Show()
+		end
 
         btn:SetParent(bar)
         btn:SetSize(BTN_SIZE, BTN_SIZE)
@@ -257,7 +257,7 @@ local function UpdateBindings()
 					--hotkey:SetPoint("TOPLEFT", btn, "TOPLEFT", -2, -2)
 					hotkey:SetPoint("TOPLEFT", btn, "TOPLEFT", -8, -4)
 					hotkey:Show()
-					SetOverrideBindingClick(btn, true, key, btn:GetName(), "LeftButton")					
+					SetOverrideBindingClick(btn, true, key, btn:GetName(), "LeftButton")
 				end
 			end
 		end
