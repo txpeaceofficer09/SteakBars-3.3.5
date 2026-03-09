@@ -41,7 +41,7 @@ for a=1,6 do
 
 			_G[btn:GetName().."Name"]:Hide() -- Hide macro name
 
-			btn:Show()
+			--btn:Show()
 		end
 
         btn:SetParent(bar)
@@ -65,7 +65,7 @@ for a=1,6 do
             btn:SetPoint("LEFT", _G[prefix..(b-1)], "RIGHT", 4, 0)
         end
 
-        btn:Show()
+        --btn:Show()
     end
 end
 
