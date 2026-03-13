@@ -4,23 +4,23 @@ local BTN_SIZE = 28
 local buttonOffsets = {0, 36, 60, 48, 12, 24}
 
 for i=1,6 do
-    local bar = CreateFrame("Frame", "SteakBar"..i, UIParent, "SecureHandlerStateTemplate")
+	local bar = CreateFrame("Frame", "SteakBar"..i, UIParent, "SecureHandlerStateTemplate")
 
-    bar:SetSize((BTN_SIZE * 12)+(4 * 11), BTN_SIZE)
+	bar:SetSize((BTN_SIZE * 12)+(4 * 11), BTN_SIZE)
 
-    if i == 1 then
-        bar:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOM", 58, 20)
-    elseif i % 2 == 0 then
-        bar:SetPoint("LEFT", _G["SteakBar"..(i-1)], "RIGHT", 4, 0)
-    else
-        bar:SetPoint("BOTTOM", _G["SteakBar"..(i-2)], "TOP", 0, 4)
-    end
+	if i == 1 then
+		bar:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOM", 58, 20)
+	elseif i % 2 == 0 then
+		bar:SetPoint("LEFT", _G["SteakBar"..(i-1)], "RIGHT", 4, 0)
+	else
+		bar:SetPoint("BOTTOM", _G["SteakBar"..(i-2)], "TOP", 0, 4)
+	end
 
-    if i == 1 then
-        RegisterStateDriver(bar, "visibility", "[bonusbar:1][bonusbar:2][bonusbar:3][bonusbar:4][bonusbar:5] hide; show")
-    else
-        RegisterStateDriver(bar, "visibility", "[bonusbar:5] hide; show")
-    end
+	if i == 1 then
+		RegisterStateDriver(bar, "visibility", "[bonusbar:1][bonusbar:2][bonusbar:3][bonusbar:4][bonusbar:5] hide; show")
+	else
+		RegisterStateDriver(bar, "visibility", "[bonusbar:5] hide; show")
+	end
 end
 
 for a=1,6 do
@@ -39,34 +39,41 @@ for a=1,6 do
 			btn.action = actionID
 			btn:SetID(actionID)
 
-			_G[btn:GetName().."Name"]:Hide() -- Hide macro name
-
-			--btn:Show()
+			--_G[btn:GetName().."Name"]:Hide() -- Hide macro name
+			_G[btn:GetName().."Name"]:SetAlpha(0) -- Hide macro name
 		end
 
-        btn:SetParent(bar)
-        btn:SetSize(BTN_SIZE, BTN_SIZE)
-        btn:ClearAllPoints()
-        btn:SetAttribute("buttonlock", true)
-        btn:SetAttribute("showgrid", 0)
-        btn:SetAttribute("statehidden", false)
+		btn:SetParent(bar)
+		btn:SetSize(BTN_SIZE, BTN_SIZE)
+		btn:ClearAllPoints()
+		btn:SetAttribute("buttonlock", true)
+		btn:SetAttribute("showgrid", 0)
+		btn:SetAttribute("statehidden", false)
 
-	local nt = _G[btn:GetName().."NormalTexture"]
-	if nt then
-		nt:SetAllPoints(btn)
-		nt:Hide()
-		nt:SetAlpha(0)
-		btn:SetNormalTexture("")
+		local nt = _G[btn:GetName().."NormalTexture"]
+		if nt then
+			nt:SetAllPoints(btn)
+			nt:Hide()
+			nt:SetAlpha(0)
+			btn:SetNormalTexture("")
+		end
+
+		if b == 1 then
+			btn:SetPoint("LEFT", bar, "LEFT", 0, 0)
+		else
+			btn:SetPoint("LEFT", _G[prefix..(b-1)], "RIGHT", 4, 0)
+		end
+
+		btn:HookScript("OnUpdate", function(self, elapsed)
+			local nt = _G[self:GetName().."NormalTexture"]
+
+			if nt then
+				nt:Hide()
+				nt:SetAlpha(0)
+				self:SetNormalTexture("")
+			end
+		end)
 	end
-
-	if b == 1 then
-            btn:SetPoint("LEFT", bar, "LEFT", 0, 0)
-        else
-            btn:SetPoint("LEFT", _G[prefix..(b-1)], "RIGHT", 4, 0)
-        end
-
-        --btn:Show()
-    end
 end
 
 local bonusbar = CreateFrame("Frame", "SteakBonusBar", UIParent, "SecureHandlerStateTemplate")
@@ -76,27 +83,27 @@ bonusbar:SetPoint("LEFT", SteakBar1, "LEFT", 0, 0)
 RegisterStateDriver(bonusbar, "visibility", "[bonusbar:1][bonusbar:2][bonusbar:3][bonusbar:4] show; hide")
 
 for i=1,12 do
-    local btn = _G["BonusActionButton"..i]
+	local btn = _G["BonusActionButton"..i]
 
-    btn:SetParent(SteakBonusBar)
-    btn:SetSize(BTN_SIZE, BTN_SIZE)
-    btn:ClearAllPoints()
-    btn:SetAttribute("buttonlock", true)
-    btn:SetAttribute("showgrid", 0)
+	btn:SetParent(SteakBonusBar)
+	btn:SetSize(BTN_SIZE, BTN_SIZE)
+	btn:ClearAllPoints()
+	btn:SetAttribute("buttonlock", true)
+	btn:SetAttribute("showgrid", 0)
 
-    local nt = _G[btn:GetName().."NormalTexture"]
-    if nt then
-        nt:SetAllPoints(btn)
-        nt:Hide()
-	nt:SetAlpha(0)
-        btn:SetNormalTexture("")
-    end
+	local nt = _G[btn:GetName().."NormalTexture"]
+	if nt then
+		nt:SetAllPoints(btn)
+		nt:Hide()
+		nt:SetAlpha(0)
+		btn:SetNormalTexture("")
+	end
 
-    if i == 1 then
-        btn:SetPoint("LEFT", bonusbar, "LEFT", 0, 0)
-    else
-        btn:SetPoint("LEFT", _G["BonusActionButton"..(i-1)], "RIGHT", 4, 0)
-    end
+	if i == 1 then
+		btn:SetPoint("LEFT", bonusbar, "LEFT", 0, 0)
+	else
+		btn:SetPoint("LEFT", _G["BonusActionButton"..(i-1)], "RIGHT", 4, 0)
+	end
 end
 
 local petbar = CreateFrame("Frame", "SteakPetBar", UIParent, "SecureHandlerStateTemplate")
@@ -108,7 +115,6 @@ RegisterStateDriver(petbar, "visibility", "[bonusbar:5] hide; [@pet,exists] show
 
 for i=1,10 do
 	local btn = _G["PetActionButton"..i]
-	--local btn = CreateFrame("CheckButton", "SteakPetBarButton"..i, SteakPetBar, "PetActionButtonTemplate", i)
 
 	btn:SetParent(SteakPetBar)
 	btn:SetSize(BTN_SIZE, BTN_SIZE)
@@ -126,7 +132,6 @@ for i=1,10 do
 		btn:SetPoint("LEFT", SteakPetBar, "LEFT", 0, 0)
 	else
 		btn:SetPoint("LEFT", _G["PetActionButton"..(i-1)], "RIGHT", 4, 0)
-		--btn:SetPoint("LEFT", _G["SteakPetBarButton"..(i-1)], "RIGHT", 4, 0)
 	end
 end
 
@@ -139,7 +144,6 @@ RegisterStateDriver(stancebar, "visibility", "[bonusbar:5] hide; show")
 
 for i=1,10 do
 	local btn = _G["ShapeshiftButton"..i]
-	--local btn = CreateFrame("CheckButton", "SteakStanceBarButton"..i, SteakStanceBar, "ShapeshiftButtonTemplate", i)
 
 	btn:SetParent(SteakStanceBar)
 	btn:SetSize(BTN_SIZE, BTN_SIZE)
@@ -157,7 +161,6 @@ for i=1,10 do
 		btn:SetPoint("LEFT", SteakStanceBar, "LEFT", 0, 0)
 	else
 		btn:SetPoint("LEFT", _G["ShapeshiftButton"..(i-1)], "RIGHT", 4, 0)
-		--btn:SetPoint("LEFT", _G["SteakStanceBarButton"..(i-1)], "RIGHT", 4, 0)
 	end
 end
 
@@ -192,14 +195,11 @@ end
 
 local LeaveBtn = CreateFrame("Button", "SteakLeaveVehicleButton", UIParent, "SecureActionButtonTemplate, SecureHandlerStateTemplate")
 LeaveBtn:SetSize(BTN_SIZE+14, BTN_SIZE+14)
---LeaveBtn:SetPoint("LEFT", SteakVehicleBar, "RIGHT", 4, 0)
 LeaveBtn:SetPoint("RIGHT", SteakPlayerFrame, "LEFT", -4, 0)
 LeaveBtn:SetNormalTexture("Interface\\Vehicles\\UI-Vehicles-Button-Exit-Up")
 LeaveBtn:SetPushedTexture("Interface\\Vehicles\\UI-Vehicles-Button-Exit-Down")
---LeaveBtn:SetAttribute("type", "vehicleexit")
 LeaveBtn:SetAttribute("type", "macro")
 LeaveBtn:SetAttribute("macrotext", "/leavevehicle\n/dismiss")
---RegisterStateDriver(LeaveBtn, "visibility", "[bonusbar:5] show; hide")
 
 LeaveBtn:RegisterEvent("UNIT_ENTERED_VEHICLE")
 LeaveBtn:RegisterEvent("UNIT_EXITED_VEHICLE")
@@ -265,26 +265,42 @@ local function UpdateBindings()
 end
 
 local function OnEvent(self, event, ...)
-    if event == "ACTIONBAR_PAGE_CHANGED" then
-        if GetActionBarPage() ~= 1 then ChangeActionBarPage(1) end
-    elseif event == "UPDATE_BINDINGS" then
-        UpdateBindings()
-    elseif event == "VARIABLES_LOADED" or event == "PLAYER_ENTERING_WORLD" then
-        SetActionBarToggles(0, 0, 0, 0, 0)
-        SHOW_MULTI_ACTIONBAR_1 = 0
-        SHOW_MULTI_ACTIONBAR_2 = 0
-        SHOW_MULTI_ACTIONBAR_3 = 0
-        SHOW_MULTI_ACTIONBAR_4 = 0
-        MultiActionBar_Update()
-    elseif event == "PLAYER_LOGIN" then
-        for a=2,6 do
-            _G["BINDING_HEADER_STEAKBAR"..a] = "SteakBar "..a
+	if event == "ACTIONBAR_PAGE_CHANGED" then
+		if GetActionBarPage() ~= 1 then ChangeActionBarPage(1) end
+	elseif event == "UPDATE_BINDINGS" then
+		if not InCombatLockdown() then
+			UpdateBindings()
+		else
+			self.needBindUpdate = true
+		end
+	elseif event == "VARIABLES_LOADED" or event == "PLAYER_ENTERING_WORLD" then
+		SetActionBarToggles(0, 0, 0, 0, 0)
+		SHOW_MULTI_ACTIONBAR_1 = 0
+		SHOW_MULTI_ACTIONBAR_2 = 0
+		SHOW_MULTI_ACTIONBAR_3 = 0
+		SHOW_MULTI_ACTIONBAR_4 = 0
+		MultiActionBar_Update()
+	elseif event == "PLAYER_LOGIN" then
+		for a=2,6 do
+			_G["BINDING_HEADER_STEAKBAR"..a] = "SteakBar "..a
 
-            for b=1,12 do
-                _G["BINDING_NAME_STEAKBAR"..a.."BUTTON"..b] = "Bar "..a.." Button "..b
-            end
-        end
-    end
+			for b=1,12 do
+				_G["BINDING_NAME_STEAKBAR"..a.."BUTTON"..b] = "Bar "..a.." Button "..b
+			end
+		end
+	end
+end
+
+local function OnUpdate(self, elapsed)
+	self.timer = (self.timer or 0) + elapsed
+	if self.timer < 0.2 then return end
+	self.timer = 0
+
+	if self.needBindUpdate and not InCombatLockdown() then
+		UpdateBindings()
+
+		self.needBindUpdate = nil
+	end
 end
 
 f:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
@@ -300,9 +316,10 @@ f:RegisterEvent("PLAYER_LOGIN")
 f:RegisterEvent("VARIABLES_LOADED")
 
 f:SetScript("OnEvent", OnEvent)
+f:SetScript("OnUpdate", OnUpdate)
 
 for _, frame in ipairs({MainMenuBar, VehicleMenuBar, MultiBarLeft, MultiBarRight, MultiBarBottomLeft, MultiBarBottomRight}) do
-    frame:HookScript("OnShow", function(self) self:Hide() end)
-    frame:Hide()
-    frame:UnregisterAllEvents()
+	frame:HookScript("OnShow", function(self) self:Hide() end)
+	frame:Hide()
+	frame:UnregisterAllEvents()
 end
