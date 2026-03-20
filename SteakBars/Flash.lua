@@ -1,5 +1,7 @@
 local f = CreateFrame("Frame")
 
+local lastEclipse = nil
+
 local FLASH_ALPHA_MIN = 0.2
 local FLASH_ALPHA_MAX = 0.9
 local FLASH_SPEED = 20
@@ -69,6 +71,12 @@ local function ShouldFlashSpell(spellID)
 	
 	local solarEclipse = UnitAura("player", "Eclipse (Solar)") ~= nil
 	local lunarEclipse = UnitAura("player", "Eclipse (Lunar)") ~= nil
+	
+	if solarEclipse then
+		lastEclipse = "solar"
+	elseif lunarEclipse then
+		lastEclipse = "lunar"
+	end
 
 	local comboPoints = GetComboPoints("player", "target")
 
@@ -100,9 +108,10 @@ local function ShouldFlashSpell(spellID)
 	if spellID == 48577 and UnitHealth("target") < 20000 and comboPoints == 5 then return true end
 	if spellID == 48577 and comboPoints == 5 and UnitDebuff("target", "Rip") then return true end
 
-	if spellID == 48461 and ( solarEclipse or not lunarEclipse ) then
+	--if spellID == 48461 and ( solarEclipse or ( not lunarEclipse and lastEclipse == "Eclipse (Solar)" ) ) then
+	if spellID == 48461 and ( solarEclipse or lastEclipse == "solar" or lastEclipse == nil ) then
 		return true
-	elseif spellID == 48465 and lunarEclipse then
+	elseif spellID == 48465 and ( lunarEclipse or lastEclipse == "lunar" ) then
 		return true
 	end
     
