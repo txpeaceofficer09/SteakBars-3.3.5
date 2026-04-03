@@ -9,7 +9,7 @@ for i=1,6 do
 	bar:SetSize((BTN_SIZE * 12)+(4 * 11), BTN_SIZE)
 
 	if i == 1 then
-		bar:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOM", 58, 20)
+		bar:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOM", 58, 21)
 	elseif i % 2 == 0 then
 		bar:SetPoint("LEFT", _G["SteakBar"..(i-1)], "RIGHT", 4, 0)
 	else
@@ -18,6 +18,9 @@ for i=1,6 do
 
 	if i == 1 then
 		RegisterStateDriver(bar, "visibility", "[bonusbar:1][bonusbar:2][bonusbar:3][bonusbar:4][bonusbar:5] hide; show")
+		if select(2, UnitClass("player")) == "WARLOCK" then
+			RegisterStateDriver(bar, "page", "[stance:0] 1; 10")
+		end
 	else
 		RegisterStateDriver(bar, "visibility", "[bonusbar:5] hide; show")
 	end
@@ -103,64 +106,6 @@ for i=1,12 do
 		btn:SetPoint("LEFT", bonusbar, "LEFT", 0, 0)
 	else
 		btn:SetPoint("LEFT", _G["BonusActionButton"..(i-1)], "RIGHT", 4, 0)
-	end
-end
-
-local petbar = CreateFrame("Frame", "SteakPetBar", UIParent, "SecureHandlerStateTemplate")
-
-petbar:SetSize((BTN_SIZE * 10) + (4 * 9), BTN_SIZE)
-petbar:SetPoint("BOTTOM", SteakBar6, "TOP", 0, 4)
-
-RegisterStateDriver(petbar, "visibility", "[bonusbar:5] hide; [@pet,exists] show; hide")
-
-for i=1,10 do
-	local btn = _G["PetActionButton"..i]
-
-	btn:SetParent(SteakPetBar)
-	btn:SetSize(BTN_SIZE, BTN_SIZE)
-	btn:ClearAllPoints()
-
-	local nt = _G[btn:GetName().."NormalTexture"]
-	if nt then
-		nt:SetAllPoints(btn)
-		nt:Hide()
-		nt:SetAlpha(0)
-		btn:SetNormalTexture("")
-	end
-    
-	if i == 1 then
-		btn:SetPoint("LEFT", SteakPetBar, "LEFT", 0, 0)
-	else
-		btn:SetPoint("LEFT", _G["PetActionButton"..(i-1)], "RIGHT", 4, 0)
-	end
-end
-
-local stancebar = CreateFrame("Frame", "SteakStanceBar", UIParent, "SecureHandlerStateTemplate")
-
-stancebar:SetSize((BTN_SIZE * 10) + (4 * 9), BTN_SIZE)
-stancebar:SetPoint("BOTTOM", SteakBar5, "TOP", 0, 4)
-
-RegisterStateDriver(stancebar, "visibility", "[bonusbar:5] hide; show")
-
-for i=1,10 do
-	local btn = _G["ShapeshiftButton"..i]
-
-	btn:SetParent(SteakStanceBar)
-	btn:SetSize(BTN_SIZE, BTN_SIZE)
-	btn:ClearAllPoints()
-
-	local nt = _G[btn:GetName().."NormalTexture"]
-	if nt then
-		nt:SetAllPoints(btn)
-		nt:Hide()
-		nt:SetAlpha(0)
-		btn:SetNormalTexture("")
-	end
-
-	if i == 1 then
-		btn:SetPoint("LEFT", SteakStanceBar, "LEFT", 0, 0)
-	else
-		btn:SetPoint("LEFT", _G["ShapeshiftButton"..(i-1)], "RIGHT", 4, 0)
 	end
 end
 
@@ -317,9 +262,3 @@ f:RegisterEvent("VARIABLES_LOADED")
 
 f:SetScript("OnEvent", OnEvent)
 f:SetScript("OnUpdate", OnUpdate)
-
-for _, frame in ipairs({MainMenuBar, VehicleMenuBar, MultiBarLeft, MultiBarRight, MultiBarBottomLeft, MultiBarBottomRight}) do
-	frame:HookScript("OnShow", function(self) self:Hide() end)
-	frame:Hide()
-	frame:UnregisterAllEvents()
-end

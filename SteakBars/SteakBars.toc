@@ -3,4 +3,8 @@
 ## Notes: Create a predefined, custom action bar layout.
 Bindings.xml
 Core.lua
+pet.lua
+stance.lua
+vehicle.lua
 Flash.lua
+override.lua
