@@ -1,7 +1,6 @@
 ## Interface: 30300
 ## Title: SteakBars
 ## Notes: Create a predefined, custom action bar layout.
-Bindings.xml
 Core.lua
 pet.lua
 stance.lua
