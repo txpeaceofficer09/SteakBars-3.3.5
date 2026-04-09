@@ -12,6 +12,5 @@ end
 for _, frame in ipairs({MainMenuBar, VehicleMenuBar, MultiBarLeft, MultiBarRight, MultiBarBottomLeft, MultiBarBottomRight}) do
 	frame:HookScript("OnShow", function(self) self:Hide() end)
 	frame:Hide()
-	frame.ignoreFramePositionManager = true
 	frame:UnregisterAllEvents()
 end
