@@ -3,6 +3,7 @@
 ## Notes: Create a predefined, custom action bar layout.
 Core.lua
 pet.lua
+#BonusBar.lua
 stance.lua
 vehicle.lua
 Flash.lua

@@ -1,5 +1,17 @@
 <Bindings>
-	<Header name="STEAKBAR2">SteakBar 2</Header>
+	<Binding name="STEAKBAR1BUTTON1" header="STEAKBAR1"></Binding>
+	<Binding name="STEAKBAR1BUTTON2"></Binding>
+	<Binding name="STEAKBAR1BUTTON3"></Binding>
+	<Binding name="STEAKBAR1BUTTON4"></Binding>
+	<Binding name="STEAKBAR1BUTTON5"></Binding>
+	<Binding name="STEAKBAR1BUTTON6"></Binding>
+	<Binding name="STEAKBAR1BUTTON7"></Binding>
+	<Binding name="STEAKBAR1BUTTON8"></Binding>
+	<Binding name="STEAKBAR1BUTTON9"></Binding>
+	<Binding name="STEAKBAR1BUTTON10"></Binding>
+	<Binding name="STEAKBAR1BUTTON11"></Binding>
+	<Binding name="STEAKBAR1BUTTON12"></Binding>
+
 	<Binding name="STEAKBAR2BUTTON1" header="STEAKBAR2"></Binding>
 	<Binding name="STEAKBAR2BUTTON2"></Binding>
 	<Binding name="STEAKBAR2BUTTON3"></Binding>
@@ -13,7 +25,6 @@
 	<Binding name="STEAKBAR2BUTTON11"></Binding>
 	<Binding name="STEAKBAR2BUTTON12"></Binding>
 
-	<Header name="STEAKBAR3">SteakBar 3</Header>
 	<Binding name="STEAKBAR3BUTTON1" header="STEAKBAR3"></Binding>
 	<Binding name="STEAKBAR3BUTTON2"></Binding>
 	<Binding name="STEAKBAR3BUTTON3"></Binding>
@@ -27,7 +38,6 @@
 	<Binding name="STEAKBAR3BUTTON11"></Binding>
 	<Binding name="STEAKBAR3BUTTON12"></Binding>
 
-	<Header name="STEAKBAR4">SteakBar 4</Header>
 	<Binding name="STEAKBAR4BUTTON1" header="STEAKBAR4"></Binding>
 	<Binding name="STEAKBAR4BUTTON2"></Binding>
 	<Binding name="STEAKBAR4BUTTON3"></Binding>
@@ -41,7 +51,6 @@
 	<Binding name="STEAKBAR4BUTTON11"></Binding>
 	<Binding name="STEAKBAR4BUTTON12"></Binding>
 
-	<Header name="STEAKBAR5">SteakBar 5</Header>
 	<Binding name="STEAKBAR5BUTTON1" header="STEAKBAR5"></Binding>
 	<Binding name="STEAKBAR5BUTTON2"></Binding>
 	<Binding name="STEAKBAR5BUTTON3"></Binding>
@@ -55,7 +64,6 @@
 	<Binding name="STEAKBAR5BUTTON11"></Binding>
 	<Binding name="STEAKBAR5BUTTON12"></Binding>
 
-	<Header name="STEAKBAR6">SteakBar 6</Header>
 	<Binding name="STEAKBAR6BUTTON1" header="STEAKBAR6"></Binding>
 	<Binding name="STEAKBAR6BUTTON2"></Binding>
 	<Binding name="STEAKBAR6BUTTON3"></Binding>

@@ -31,11 +31,35 @@ end
 
 local LeaveBtn = CreateFrame("Button", "SteakLeaveVehicleButton", UIParent, "SecureActionButtonTemplate, SecureHandlerStateTemplate")
 LeaveBtn:SetSize(BTN_SIZE+14, BTN_SIZE+14)
-LeaveBtn:SetPoint("RIGHT", SteakPlayerFrame, "LEFT", -4, 0)
+
+if SteakPetFrame then
+	LeaveBtn:SetPoint("RIGHT", SteakPetFrame, "LEFT", -4, 0)
+else
+	LeaveBtn:SetPoint("RIGHT", SteakPlayerFrame, "LEFT", -4, 0)
+end
+
 LeaveBtn:SetNormalTexture("Interface\\Vehicles\\UI-Vehicles-Button-Exit-Up")
 LeaveBtn:SetPushedTexture("Interface\\Vehicles\\UI-Vehicles-Button-Exit-Down")
 LeaveBtn:SetAttribute("type", "macro")
 LeaveBtn:SetAttribute("macrotext", "/leavevehicle\n/dismiss")
+
+RegisterStateDriver(LeaveBtn, "visibility", "[vehicleui][bonusbar:5] show; hide")
+
+local function OnEvent(self, event, ...)
+	if CanExitVehicle() then
+		self:ClearAllPoints()
+		if SteakPetFrame then
+			self:SetPoint("RIGHT", SteakPetFrame, "LEFT", -4, 0)
+		elseif SteakPlayerFrame then
+			self:SetPoint("RIGHT", SteakPlayerFrame, "LEFT", -4, 0)
+		else
+			self:SetPoint("LEFT", vehiclebar, "RIGHT", 4, 0)
+		end
+		--self:Show()
+	else
+		--self:Hide()
+	end
+end
 
 LeaveBtn:RegisterEvent("UNIT_ENTERED_VEHICLE")
 LeaveBtn:RegisterEvent("UNIT_EXITED_VEHICLE")
@@ -43,16 +67,4 @@ LeaveBtn:RegisterEvent("PLAYER_ENTERING_WORLD")
 LeaveBtn:RegisterEvent("PLAYER_LOSES_VEHICLE_DATA")
 LeaveBtn:RegisterEvent("PLAYER_GAINS_VEHICLE_DATA")
 
-LeaveBtn:SetScript("OnEvent", function(self, event, ...)
-	if CanExitVehicle() then
-		self:ClearAllPoints()
-		if SteakPetFrame then
-			self:SetPoint("RIGHT", SteakPetFrame, "LEFT", -4, 0)
-		else
-			self:SetPoint("RIGHT", SteakPlayerFrame, "LEFT", -4, 0)
-		end
-		self:Show()
-	else
-		self:Hide()
-	end
-end)
+LeaveBtn:SetScript("OnEvent", OnEvent)
