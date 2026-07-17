@@ -34,8 +34,10 @@ LeaveBtn:SetSize(BTN_SIZE+14, BTN_SIZE+14)
 
 if SteakPetFrame then
 	LeaveBtn:SetPoint("RIGHT", SteakPetFrame, "LEFT", -4, 0)
-else
+elseif SteakPlayerFrame then
 	LeaveBtn:SetPoint("RIGHT", SteakPlayerFrame, "LEFT", -4, 0)
+else
+	LeaveBtn:SetPoint("LEFT", SteakBar1, "RIGHT", 4, 0)
 end
 
 LeaveBtn:SetNormalTexture("Interface\\Vehicles\\UI-Vehicles-Button-Exit-Up")

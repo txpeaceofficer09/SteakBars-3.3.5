@@ -14,6 +14,16 @@ local pages = {
 	["DEFAULT"] = "[bonusbar:5] 11; [bar:2] 1; [bar:3] 1; [bar:4] 1; [bar:5] 1; [bar:6] 1;"
 }
 
+--[[
+hooksecurefunc("ActionButton_Update", function(self)
+	local hotkey = _G[self:GetName().."HotKey"]
+
+	if hotkey and hotkey:GetText() == RANGE_INDICATOR then
+		hotkey:SetText("")
+	end
+end)
+]]
+
 local function UpdateState(bar)
 	if InCombatLockdown() then
 		f.updatestates = true
@@ -214,11 +224,11 @@ local function OnEvent(self, event, ...)
 	end
 
 	if event == "UPDATE_BINDINGS" then
-		if not InCombatLockdown() then
+		--if not InCombatLockdown() then
 			UpdateBindings()
-		else
-			self.needBindUpdate = true
-		end
+		--else
+		--	self.needBindUpdate = true
+		--end
 	elseif event == "VARIABLES_LOADED" or event == "PLAYER_ENTERING_WORLD" then
 		SetActionBarToggles(0, 0, 0, 0, 0)
 		SHOW_MULTI_ACTIONBAR_1 = 0
@@ -242,11 +252,11 @@ local function OnUpdate(self, elapsed)
 	if self.timer < 0.2 then return end
 	self.timer = 0
 
-	if self.needBindUpdate and not InCombatLockdown() then
-		UpdateBindings()
+	--if self.needBindUpdate and not InCombatLockdown() then
+		--UpdateBindings()
 
-		self.needBindUpdate = nil
-	end
+	--	self.needBindUpdate = nil
+	--end
 
 	if self.updatestates and not InCombatLockdown() then
 		for i=1,6 do
